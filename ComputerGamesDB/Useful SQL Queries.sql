@@ -1,6 +1,6 @@
-ALTER AUTHORIZATION ON DATABASE::[DataBaseName] TO sa; -- устранить ошибку dbo не существует
+ALTER AUTHORIZATION ON DATABASE::[DataBaseName] TO sa; -- СѓСЃС‚СЂР°РЅРёС‚СЊ РѕС€РёР±РєСѓ dbo РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚
 
-DBCC CHECKIDENT ("[dbo].[TableName]", RESEED, 0) -- Изменяем значение IDENTITY на 0
+DBCC CHECKIDENT ("[dbo].[TableName]", RESEED, 0) -- РР·РјРµРЅСЏРµРј Р·РЅР°С‡РµРЅРёРµ IDENTITY РЅР° 0
 GO
 
 SELECT * FROM INFORMATION_SCHEMA.TABLES;
@@ -22,9 +22,9 @@ FROM INFORMATION_SCHEMA.COLUMNS
   ORDER BY TABLE_NAME
  GO
 
--- удаление последней строчки
+-- СѓРґР°Р»РµРЅРёРµ РїРѕСЃР»РµРґРЅРµР№ СЃС‚СЂРѕС‡РєРё
 DELETE FROM tableName
 WHERE ID = (SELECT MAX(ID) FROM tableName)
 
--- Добавить к текстовой переменной '%', чтобы его не пришлось вводить при вызове процедуры
+-- Р”РѕР±Р°РІРёС‚СЊ Рє С‚РµРєСЃС‚РѕРІРѕР№ РїРµСЂРµРјРµРЅРЅРѕР№ '%', С‡С‚РѕР±С‹ РµРіРѕ РЅРµ РїСЂРёС€Р»РѕСЃСЊ РІРІРѕРґРёС‚СЊ РїСЂРё РІС‹Р·РѕРІРµ РїСЂРѕС†РµРґСѓСЂС‹
 SELECT @Name = RTRIM(@Name)	+ '%'; 
