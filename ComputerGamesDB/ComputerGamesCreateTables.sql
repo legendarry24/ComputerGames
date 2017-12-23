@@ -106,7 +106,7 @@ CREATE TABLE SupportedPlatform
 	PlatformID INT NOT NULL FOREIGN KEY REFERENCES [Platform](ID)
 	 ON DELETE CASCADE ON UPDATE CASCADE,
 	QualityOfSupport NVARCHAR(20) NOT NULL
-	 CHECK (QualityOfSupport IN ('Отлично', 'Нормально', 'Ужасно')),
+	 CHECK (QualityOfSupport IN ('РћС‚Р»РёС‡РЅРѕ', 'РќРѕСЂРјР°Р»СЊРЅРѕ', 'РЈР¶Р°СЃРЅРѕ')),
 	MinCPUFrequency FLOAT,
 	MinRAM			TINYINT,
 	HardDiskStorage FLOAT NOT NULL,
@@ -155,9 +155,9 @@ GO
 -- Views
 ALTER VIEW [GameRequirements]
 AS 
-SELECT g.[Name] Игра, p.[Type] Платформа, sp.[MinOC] [Минимально требуемая ОС],
-	   [MinCPUFrequency] [MinCPUFrequency, ГГц], [MinRAM] [MinRAM, ГБ], 
-	   [HardDiskStorage] [HardDiskStorage, ГБ]
+SELECT g.[Name] РРіСЂР°, p.[Type] РџР»Р°С‚С„РѕСЂРјР°, sp.[MinOC] [РњРёРЅРёРјР°Р»СЊРЅРѕ С‚СЂРµР±СѓРµРјР°СЏ РћРЎ],
+	   [MinCPUFrequency] [MinCPUFrequency, Р“Р“С†], [MinRAM] [MinRAM, Р“Р‘], 
+	   [HardDiskStorage] [HardDiskStorage, Р“Р‘]
 FROM [Game] g
 JOIN [SupportedPlatform] sp 	ON sp.GameID = g.ID
 JOIN [Platform] p				ON sp.PlatformID = p.ID
@@ -165,9 +165,9 @@ GO
 
 ALTER VIEW SearchGame
 AS
-	SELECT g.Name Игра, d.Name Разработчик, pub.Name Издатель, g.ReleaseDate [Дата выпуска], 
-	gen.Name Жанр, s.Name Стилистика, g.Rating Рейтинг, [Price] цена,
-	[Multiplayer] [Наличие мультиплеера], [Cybersport] Киберспортивная
+	SELECT g.Name РРіСЂР°, d.Name Р Р°Р·СЂР°Р±РѕС‚С‡РёРє, pub.Name РР·РґР°С‚РµР»СЊ, g.ReleaseDate [Р”Р°С‚Р° РІС‹РїСѓСЃРєР°], 
+	gen.Name Р–Р°РЅСЂ, s.Name РЎС‚РёР»РёСЃС‚РёРєР°, g.Rating Р РµР№С‚РёРЅРі, [Price] С†РµРЅР°,
+	[Multiplayer] [РќР°Р»РёС‡РёРµ РјСѓР»СЊС‚РёРїР»РµРµСЂР°], [Cybersport] РљРёР±РµСЂСЃРїРѕСЂС‚РёРІРЅР°СЏ
 	FROM Game g
 	JOIN [Developer] d			ON d.ID		 = g.DeveloperID
 	JOIN [Publisher] pub		ON pub.ID    = g.PublisherID
@@ -177,7 +177,7 @@ AS
 GO
 -- Procedures
 ALTER PROC FindGame
-	@Name		varchar (35) = '%', -- Значение по умолчанию
+	@Name		varchar (35) = '%', -- Р—РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 	@Developer  varchar (35) = '%', 
 	@Publisher  varchar (35) = '%',
 	@Genre	    nvarchar(30) = '%',
@@ -189,9 +189,9 @@ AS
 	SELECT @Genre	   = RTRIM(@Genre)		+ '%';
 	SELECT @Stylistics = RTRIM(@Stylistics) + '%';
 
-	SELECT g.Name Игра, d.Name Разработчик, pub.Name Издатель, g.ReleaseDate [Дата выпуска], 
-	gen.Name Жанр, s.Name Стилистика, g.Rating Рейтинг, [Price] цена,
-	[Multiplayer] [Наличие мультиплеера], [Cybersport] Киберспортивная
+	SELECT g.Name РРіСЂР°, d.Name Р Р°Р·СЂР°Р±РѕС‚С‡РёРє, pub.Name РР·РґР°С‚РµР»СЊ, g.ReleaseDate [Р”Р°С‚Р° РІС‹РїСѓСЃРєР°], 
+	gen.Name Р–Р°РЅСЂ, s.Name РЎС‚РёР»РёСЃС‚РёРєР°, g.Rating Р РµР№С‚РёРЅРі, [Price] С†РµРЅР°,
+	[Multiplayer] [РќР°Р»РёС‡РёРµ РјСѓР»СЊС‚РёРїР»РµРµСЂР°], [Cybersport] РљРёР±РµСЂСЃРїРѕСЂС‚РёРІРЅР°СЏ
 	FROM [Game] g
 	JOIN [Developer] d			ON d.ID		 = g.DeveloperID  AND d.[Name]   LIKE @Developer
 	JOIN [Publisher] pub		ON pub.ID    = g.PublisherID  AND pub.[Name] LIKE @Publisher
@@ -207,7 +207,7 @@ AS
 	SELECT @PlatformName = RTRIM(@PlatformName)	+ '%'; 
 	SELECT @GameName	 = RTRIM(@GameName)		+ '%';
 
-	SELECT g.Name Игра, p.[Type] Платформа, sp.QualityOfSupport [Качество портирования]
+	SELECT g.Name РРіСЂР°, p.[Type] РџР»Р°С‚С„РѕСЂРјР°, sp.QualityOfSupport [РљР°С‡РµСЃС‚РІРѕ РїРѕСЂС‚РёСЂРѕРІР°РЅРёСЏ]
 	FROM [Game] g
 	JOIN [SupportedPlatform] sp ON sp.GameID = g.ID
 	JOIN [Platform] p			ON p.ID	 = sp.PlatformID AND p.[Type] LIKE @PlatformName
@@ -467,15 +467,15 @@ CREATE TRIGGER trDenyDeletePlatform
 ON [Platform]
 INSTEAD OF DELETE
 AS
--- выход из триггера, если не одной строчки не обработанно
+-- РІС‹С…РѕРґ РёР· С‚СЂРёРіРіРµСЂР°, РµСЃР»Рё РЅРµ РѕРґРЅРѕР№ СЃС‚СЂРѕС‡РєРё РЅРµ РѕР±СЂР°Р±РѕС‚Р°РЅРЅРѕ
 	IF @@ROWCOUNT = 0 
 		RETURN
--- Используется SELECT 1 вместо SELECT * для увеличения производительности, т.к. возвращаемые данные
--- не используются; важен сам факт возврата (true или false).
+-- РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ SELECT 1 РІРјРµСЃС‚Рѕ SELECT * РґР»СЏ СѓРІРµР»РёС‡РµРЅРёСЏ РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё, С‚.Рє. РІРѕР·РІСЂР°С‰Р°РµРјС‹Рµ РґР°РЅРЅС‹Рµ
+-- РЅРµ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ; РІР°Р¶РµРЅ СЃР°Рј С„Р°РєС‚ РІРѕР·РІСЂР°С‚Р° (true РёР»Рё false).
 	IF EXISTS (SELECT 1 FROM [Platform] p
 			   JOIN deleted d ON p.ID = d.ID
 			   WHERE p.ID <= 3)
-		RAISERROR('Удалять исходные данные запрещено!', 10, 1)
+		RAISERROR('РЈРґР°Р»СЏС‚СЊ РёСЃС…РѕРґРЅС‹Рµ РґР°РЅРЅС‹Рµ Р·Р°РїСЂРµС‰РµРЅРѕ!', 10, 1)
 	ELSE
 		DELETE [Platform] WHERE ID IN (SELECT ID FROM deleted)
 GO
@@ -484,17 +484,17 @@ CREATE TRIGGER trDenyDeleteDeveloper
 ON [dbo].[Developer]
 INSTEAD OF DELETE
 AS
--- выход из триггера, если не одной строчки не обработанно
+-- РІС‹С…РѕРґ РёР· С‚СЂРёРіРіРµСЂР°, РµСЃР»Рё РЅРµ РѕРґРЅРѕР№ СЃС‚СЂРѕС‡РєРё РЅРµ РѕР±СЂР°Р±РѕС‚Р°РЅРЅРѕ
 	IF @@ROWCOUNT = 0 
 		RETURN
--- Отключает вывод сообщений о кол-ве обработанных записей, что положительно влияет на производительность
+-- РћС‚РєР»СЋС‡Р°РµС‚ РІС‹РІРѕРґ СЃРѕРѕР±С‰РµРЅРёР№ Рѕ РєРѕР»-РІРµ РѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹С… Р·Р°РїРёСЃРµР№, С‡С‚Рѕ РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕ РІР»РёСЏРµС‚ РЅР° РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚СЊ
 	SET NOCOUNT ON
--- Используется SELECT 1 вместо SELECT * для увеличения производительности, т.к. возвращаемые данные
--- не используются; важен сам факт возврата (true или false).
+-- РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ SELECT 1 РІРјРµСЃС‚Рѕ SELECT * РґР»СЏ СѓРІРµР»РёС‡РµРЅРёСЏ РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё, С‚.Рє. РІРѕР·РІСЂР°С‰Р°РµРјС‹Рµ РґР°РЅРЅС‹Рµ
+-- РЅРµ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ; РІР°Р¶РµРЅ СЃР°Рј С„Р°РєС‚ РІРѕР·РІСЂР°С‚Р° (true РёР»Рё false).
 	IF EXISTS (SELECT 1 FROM [Developer] dev
 			   JOIN deleted d ON dev.ID = d.ID
 			   WHERE dev.ID <= 12)
-		RAISERROR('Удалять исходные данные запрещено!', 10, 1)
+		RAISERROR('РЈРґР°Р»СЏС‚СЊ РёСЃС…РѕРґРЅС‹Рµ РґР°РЅРЅС‹Рµ Р·Р°РїСЂРµС‰РµРЅРѕ!', 10, 1)
 	ELSE
 		DELETE [Developer] WHERE ID IN (SELECT ID FROM deleted)
 GO
@@ -503,17 +503,17 @@ CREATE TRIGGER trDenyDeletePublisher
 ON [dbo].[Publisher]
 INSTEAD OF DELETE
 AS
--- выход из триггера, если не одной строчки не обработанно
+-- РІС‹С…РѕРґ РёР· С‚СЂРёРіРіРµСЂР°, РµСЃР»Рё РЅРµ РѕРґРЅРѕР№ СЃС‚СЂРѕС‡РєРё РЅРµ РѕР±СЂР°Р±РѕС‚Р°РЅРЅРѕ
 	IF @@ROWCOUNT = 0 
 		RETURN
--- Отключает вывод сообщений о кол-ве обработанных записей, что положительно влияет на производительность
+-- РћС‚РєР»СЋС‡Р°РµС‚ РІС‹РІРѕРґ СЃРѕРѕР±С‰РµРЅРёР№ Рѕ РєРѕР»-РІРµ РѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹С… Р·Р°РїРёСЃРµР№, С‡С‚Рѕ РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕ РІР»РёСЏРµС‚ РЅР° РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚СЊ
 	SET NOCOUNT ON
--- Используется SELECT 1 вместо SELECT * для увеличения производительности, т.к. возвращаемые данные
--- не используются; важен сам факт возврата (true или false).
+-- РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ SELECT 1 РІРјРµСЃС‚Рѕ SELECT * РґР»СЏ СѓРІРµР»РёС‡РµРЅРёСЏ РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё, С‚.Рє. РІРѕР·РІСЂР°С‰Р°РµРјС‹Рµ РґР°РЅРЅС‹Рµ
+-- РЅРµ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ; РІР°Р¶РµРЅ СЃР°Рј С„Р°РєС‚ РІРѕР·РІСЂР°С‚Р° (true РёР»Рё false).
 	IF EXISTS (SELECT 1 FROM [Publisher] p
 			   JOIN deleted d ON p.ID = d.ID
 			   WHERE p.ID <= 11)
-		RAISERROR('Удалять исходные данные запрещено!', 10, 1)
+		RAISERROR('РЈРґР°Р»СЏС‚СЊ РёСЃС…РѕРґРЅС‹Рµ РґР°РЅРЅС‹Рµ Р·Р°РїСЂРµС‰РµРЅРѕ!', 10, 1)
 	ELSE
 		DELETE [Publisher] WHERE ID IN (SELECT ID FROM deleted)
 GO
@@ -522,17 +522,17 @@ ALTER TRIGGER trDenyDeleteGenre
 ON [dbo].[Genre]
 INSTEAD OF DELETE
 AS
--- выход из триггера, если не одной строчки не обработанно
+-- РІС‹С…РѕРґ РёР· С‚СЂРёРіРіРµСЂР°, РµСЃР»Рё РЅРµ РѕРґРЅРѕР№ СЃС‚СЂРѕС‡РєРё РЅРµ РѕР±СЂР°Р±РѕС‚Р°РЅРЅРѕ
 	IF @@ROWCOUNT = 0 
 		RETURN
--- Отключает вывод сообщений о кол-ве обработанных записей, что положительно влияет на производительность
+-- РћС‚РєР»СЋС‡Р°РµС‚ РІС‹РІРѕРґ СЃРѕРѕР±С‰РµРЅРёР№ Рѕ РєРѕР»-РІРµ РѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹С… Р·Р°РїРёСЃРµР№, С‡С‚Рѕ РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕ РІР»РёСЏРµС‚ РЅР° РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚СЊ
 	SET NOCOUNT ON
--- Используется SELECT 1 вместо SELECT * для увеличения производительности, т.к. возвращаемые данные
--- не используются; важен сам факт возврата (true или false).
+-- РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ SELECT 1 РІРјРµСЃС‚Рѕ SELECT * РґР»СЏ СѓРІРµР»РёС‡РµРЅРёСЏ РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё, С‚.Рє. РІРѕР·РІСЂР°С‰Р°РµРјС‹Рµ РґР°РЅРЅС‹Рµ
+-- РЅРµ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ; РІР°Р¶РµРЅ СЃР°Рј С„Р°РєС‚ РІРѕР·РІСЂР°С‚Р° (true РёР»Рё false).
 	IF EXISTS (SELECT 1 FROM [Genre] g
 			   JOIN deleted d ON g.ID = d.ID
 			   WHERE g.ID <= 8)
-		RAISERROR('Удалять исходные данные запрещено!', 10, 1)
+		RAISERROR('РЈРґР°Р»СЏС‚СЊ РёСЃС…РѕРґРЅС‹Рµ РґР°РЅРЅС‹Рµ Р·Р°РїСЂРµС‰РµРЅРѕ!', 10, 1)
 	ELSE
 		DELETE [Genre] WHERE ID IN (SELECT ID FROM deleted)
 GO
@@ -541,23 +541,23 @@ CREATE TRIGGER trDenyDeleteStylistics
 ON [dbo].[Stylistics]
 INSTEAD OF DELETE
 AS
--- выход из триггера, если не одной строчки не обработанно
+-- РІС‹С…РѕРґ РёР· С‚СЂРёРіРіРµСЂР°, РµСЃР»Рё РЅРµ РѕРґРЅРѕР№ СЃС‚СЂРѕС‡РєРё РЅРµ РѕР±СЂР°Р±РѕС‚Р°РЅРЅРѕ
 	IF @@ROWCOUNT = 0 
 		RETURN
--- Отключает вывод сообщений о кол-ве обработанных записей, что положительно влияет на производительность
+-- РћС‚РєР»СЋС‡Р°РµС‚ РІС‹РІРѕРґ СЃРѕРѕР±С‰РµРЅРёР№ Рѕ РєРѕР»-РІРµ РѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹С… Р·Р°РїРёСЃРµР№, С‡С‚Рѕ РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕ РІР»РёСЏРµС‚ РЅР° РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚СЊ
 	SET NOCOUNT ON
--- Используется SELECT 1 вместо SELECT * для увеличения производительности, т.к. возвращаемые данные
--- не используются; важен сам факт возврата (true или false).
+-- РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ SELECT 1 РІРјРµСЃС‚Рѕ SELECT * РґР»СЏ СѓРІРµР»РёС‡РµРЅРёСЏ РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё, С‚.Рє. РІРѕР·РІСЂР°С‰Р°РµРјС‹Рµ РґР°РЅРЅС‹Рµ
+-- РЅРµ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ; РІР°Р¶РµРЅ СЃР°Рј С„Р°РєС‚ РІРѕР·РІСЂР°С‚Р° (true РёР»Рё false).
 	IF EXISTS (SELECT 1 FROM [Stylistics] s
 			   JOIN deleted d ON s.ID = d.ID
 			   WHERE s.ID <= 6)
-		RAISERROR('Удалять исходные данные запрещено!', 10, 1)
+		RAISERROR('РЈРґР°Р»СЏС‚СЊ РёСЃС…РѕРґРЅС‹Рµ РґР°РЅРЅС‹Рµ Р·Р°РїСЂРµС‰РµРЅРѕ!', 10, 1)
 	ELSE
 		DELETE [Stylistics] WHERE ID IN (SELECT ID FROM deleted)
 GO
 
 ALTER PROC spGameCount
-	@ID int = null OUTPUT -- Для обьявления выходного парметра используется ключевое слово OUTPUT
+	@ID int = null OUTPUT -- Р”Р»СЏ РѕР±СЊСЏРІР»РµРЅРёСЏ РІС‹С…РѕРґРЅРѕРіРѕ РїР°СЂРјРµС‚СЂР° РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ OUTPUT
 AS
 IF @ID IS NULL
 BEGIN
@@ -567,11 +567,11 @@ ELSE SELECT Name FROM Game WHERE ID = @ID
 GO
 
 DECLARE @MyID int;
-EXEC spGameCount @MyID OUTPUT; -- при вызове хранимой прроцедуры ключевое слово OUTPUT должно использоваться так же как и при обьявлении, обратите внимание как присваивается значение внешней переменной
+EXEC spGameCount @MyID OUTPUT; -- РїСЂРё РІС‹Р·РѕРІРµ С…СЂР°РЅРёРјРѕР№ РїСЂСЂРѕС†РµРґСѓСЂС‹ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ OUTPUT РґРѕР»Р¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ С‚Р°Рє Р¶Рµ РєР°Рє Рё РїСЂРё РѕР±СЊСЏРІР»РµРЅРёРё, РѕР±СЂР°С‚РёС‚Рµ РІРЅРёРјР°РЅРёРµ РєР°Рє РїСЂРёСЃРІР°РёРІР°РµС‚СЃСЏ Р·РЅР°С‡РµРЅРёРµ РІРЅРµС€РЅРµР№ РїРµСЂРµРјРµРЅРЅРѕР№
 PRINT CAST (@MyID as varchar);
 GO
 
 DECLARE @MyID int;
 SET @MyID = 4;
--- вызов в качестве IN параметра
+-- РІС‹Р·РѕРІ РІ РєР°С‡РµСЃС‚РІРµ IN РїР°СЂР°РјРµС‚СЂР°
 EXEC spGameCount @MyID;
