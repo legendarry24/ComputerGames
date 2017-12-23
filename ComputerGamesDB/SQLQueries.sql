@@ -1,47 +1,47 @@
 USE ComputerGamesDB
 GO
 
-SELECT * FROM GameRequirements gr	-- Вызов View 
-WHERE gr.Игра = 'Hearthstone: Heroes of Warcraft'
+SELECT * FROM GameRequirements gr	-- Р’С‹Р·РѕРІ View 
+WHERE gr.РРіСЂР° = 'Hearthstone: Heroes of Warcraft'
 GO
 
-SELECT * FROM GameRequirements WHERE Платформа <> 'Игровая консоль'
+SELECT * FROM GameRequirements WHERE РџР»Р°С‚С„РѕСЂРјР° <> 'РРіСЂРѕРІР°СЏ РєРѕРЅСЃРѕР»СЊ'
 SELECT * FROM GameRequirements
 
-SELECT * FROM SearchGame WHERE Игра LIKE '%Witcher%'
-SELECT * FROM SearchGame WHERE Издатель LIKE '%Warner%'
-SELECT * FROM SearchGame WHERE Жанр LIKE 'с%'
-SELECT * FROM SearchGame WHERE Стилистика LIKE 'П%'
-SELECT * FROM SearchGame WHERE цена IS NULL -- free to play games
-SELECT * FROM SearchGame WHERE [Наличие мультиплеера] = 1
-SELECT * FROM SearchGame WHERE Киберспортивная = 1
+SELECT * FROM SearchGame WHERE РРіСЂР° LIKE '%Witcher%'
+SELECT * FROM SearchGame WHERE РР·РґР°С‚РµР»СЊ LIKE '%Warner%'
+SELECT * FROM SearchGame WHERE Р–Р°РЅСЂ LIKE 'СЃ%'
+SELECT * FROM SearchGame WHERE РЎС‚РёР»РёСЃС‚РёРєР° LIKE 'Рџ%'
+SELECT * FROM SearchGame WHERE С†РµРЅР° IS NULL -- free to play games
+SELECT * FROM SearchGame WHERE [РќР°Р»РёС‡РёРµ РјСѓР»СЊС‚РёРїР»РµРµСЂР°] = 1
+SELECT * FROM SearchGame WHERE РљРёР±РµСЂСЃРїРѕСЂС‚РёРІРЅР°СЏ = 1
 SELECT TOP 5 * FROM SearchGame
-ORDER BY Рейтинг DESC
+ORDER BY Р РµР№С‚РёРЅРі DESC
 
-EXEC SearchGameByPlatform		    -- Будет использоваться значение по умолчанию
+EXEC SearchGameByPlatform		    -- Р‘СѓРґРµС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 GO
 
-EXEC SearchGameByPlatform 'Windows' -- передаем процедуре входное значение
+EXEC SearchGameByPlatform 'Windows' -- РїРµСЂРµРґР°РµРј РїСЂРѕС†РµРґСѓСЂРµ РІС…РѕРґРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ
 GO
 
 EXEC SearchGameByPlatform 'Android' 
 GO
 
-EXEC SearchGameByPlatform 'Игровая консоль'
+EXEC SearchGameByPlatform 'РРіСЂРѕРІР°СЏ РєРѕРЅСЃРѕР»СЊ'
 GO
 
 EXEC SearchGameByPlatform 'Windows','Mortal'
 GO
 
-SELECT COUNT(*) [кол-во бесплатных]
-FROM SearchGame WHERE цена IS NULL
+SELECT COUNT(*) [РєРѕР»-РІРѕ Р±РµСЃРїР»Р°С‚РЅС‹С…]
+FROM SearchGame WHERE С†РµРЅР° IS NULL
 
-SELECT Издатель, COUNT(Игра) [кол-во выпущенных игр]
+SELECT РР·РґР°С‚РµР»СЊ, COUNT(РРіСЂР°) [РєРѕР»-РІРѕ РІС‹РїСѓС‰РµРЅРЅС‹С… РёРіСЂ]
 FROM SearchGame
-GROUP BY  Издатель
+GROUP BY  РР·РґР°С‚РµР»СЊ
 
 EXEC FindGame @Publisher = 'Warner'
 EXEC FindGame @Developer = 'CD Projekt RED'
 EXEC FindGame 'd', 'a'
-EXEC FindGame @Genre = 'ККИ'
-EXEC FindGame @Stylistics = 'Пост'
+EXEC FindGame @Genre = 'РљРљР'
+EXEC FindGame @Stylistics = 'РџРѕСЃС‚'
